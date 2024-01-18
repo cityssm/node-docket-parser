@@ -1,0 +1,35 @@
+{
+  "name": "@cityssm/docket-parser",
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "description": "Parses Provincial Offences docket print data into JavaScript objects.",
+  "keywords": [
+    "court",
+    "docket",
+    "provincial-offences",
+    "poa"
+  ],
+  "exports": "./index.js",
+  "scripts": {
+    "test": "mocha --timeout 60000",
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 60000 --exit"
+  },
+  "author": "The Corporation of the City of Sault Ste. Marie",
+  "license": "MIT",
+  "homepage": "https://github.com/cityssm/node-docket-parser#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cityssm/node-docket-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cityssm/node-docket-parser/issues"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.5",
+    "eslint-config-cityssm": "^1.4.0"
+  }
+}
