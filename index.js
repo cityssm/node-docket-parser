@@ -75,8 +75,7 @@ export function parseDockets(docketFileText) {
                     const extendedComment = `${itemLine1
                         .slice(112, 131)
                         .trim()}\n${itemLine2.slice(112, 131)}`.trim();
-                    docket.docketItems.at(-1).comment +=
-                        '\n' + extendedComment;
+                    docket.docketItems.at(-1).comment += `\n${extendedComment}`;
                     continue;
                 }
                 const informationNumber = `${itemLine1

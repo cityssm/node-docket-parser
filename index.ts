@@ -124,8 +124,9 @@ export function parseDockets(docketFileText: string): Docket[] {
             .slice(112, 131)
             .trim()}\n${itemLine2.slice(112, 131)}`.trim()
 
-          ;(docket.docketItems.at(-1) as DocketItem).comment +=
-            '\n' + extendedComment
+          ;(
+            docket.docketItems.at(-1) as DocketItem
+          ).comment += `\n${extendedComment}`
 
           continue
         }

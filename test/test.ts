@@ -5,7 +5,7 @@ import { parseDockets } from '../index.js'
 
 describe('docket-parser', () => {
   it('Parses a docket file', () => {
-    const docketFileText = fs.readFileSync('test/dockets/docket.txt').toString()
+    const docketFileText = fs.readFileSync('test/dockets/whovilleDocket.txt').toString()
 
     const docket = parseDockets(docketFileText)
 
