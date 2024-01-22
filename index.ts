@@ -1,5 +1,9 @@
-import { appTypes } from './lookups.js'
-import type { Docket, DocketItem } from './types.js'
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable security/detect-object-injection */
+
+import { actions, appTypes, finds, pleas } from './lookups.js'
+import type { Docket, DocketItem, DocketTimeString } from './types.js'
+import { normalizeCourtDate, normalizeItemDate } from './utilities.js'
 
 const spacePaddingLength = 130
 
@@ -47,7 +51,8 @@ export function parseDockets(docketFileText: string): Docket[] {
 
       const court = docketLine.slice(1, 6).trim()
       const room = docketLine.slice(31, 36).trim()
-      const courtTimeString = docketLine.slice(103, 108) as `${number}:${number}`
+      const prosecutor = docketLine.slice(73, 103).trim()
+      const courtTimeString = docketLine.slice(103, 108) as DocketTimeString
 
       // One blank line
       docketLineIndex += 1
@@ -64,19 +69,33 @@ export function parseDockets(docketFileText: string): Docket[] {
       const pageNumber = docketLine.slice(34, 35).trim()
       const justiceOfThePeace = docketLine.slice(43, 73).trim()
 
+      // One blank line
+      docketLineIndex += 1
+
+      // Third header line
+      docketLineIndex += 1
+      docketLine = (docketLines.at(docketLineIndex) ?? '').padEnd(
+        spacePaddingLength,
+        ' '
+      )
+
+      const clerk = docketLine.slice(7, 44).trim()
+
       const docket: Docket = {
         docketDescription,
         pageNumber: Number.parseInt(pageNumber, 10),
         court,
         room,
-        courtDate: courtDateString,
+        prosecutor,
+        courtDate: normalizeCourtDate(courtDateString),
         courtTime: courtTimeString,
         justiceOfThePeace,
+        clerk,
         docketItems: []
       }
 
-      // Five blank lines
-      docketLineIndex += 5
+      // Three blank lines
+      docketLineIndex += 3
 
       while (docketLineIndex < docketLines.length) {
         docketLineIndex += 1
@@ -99,16 +118,16 @@ export function parseDockets(docketFileText: string): Docket[] {
         const lineNumber = itemLine1.slice(0, 4).trim()
 
         if (lineNumber === '') {
-          // Likely a court action overflowing to next two lines
+          // Likely a comment overflowing to next two lines
 
-          const extendedCourtAction = (
+          const extendedComment = (
             itemLine1.slice(112, 131).trim() +
             '\n' +
             itemLine2.slice(112, 131)
           ).trim()
 
-          ;(docket.docketItems.at(-1) as DocketItem).courtAction +=
-            '\n' + extendedCourtAction
+          ;(docket.docketItems.at(-1) as DocketItem).comment +=
+            '\n' + extendedComment
 
           continue
         }
@@ -123,31 +142,34 @@ export function parseDockets(docketFileText: string): Docket[] {
         const counts = itemLine1.slice(25, 27).trim()
 
         const appType = itemLine1.slice(28, 31).trim()
-
         const appTypeNumber = itemLine2.slice(28, 31).trim()
+        const appTypeDescription = appTypes[appType]
 
-        const appTypeDescription = appTypes[appType] as string | undefined
-
-        const compBadge = (
+        const compBadgeNumber = (
           itemLine1.slice(32, 40).trim() +
           ' ' +
           itemLine2.slice(32, 40)
         ).trim()
 
         const offenceDate = itemLine1.slice(41, 48).trim()
+        const arrestDate = itemLine2.slice(41, 48).trim()
 
         const defendantName = itemLine1.slice(53, 78).trim()
         const offenceDescription = itemLine1.slice(78, 99).trim()
 
         const action = itemLine1.slice(100, 103).trim()
+        const actionDescription = actions[action]
 
         // eslint-disable-next-line unicorn/prevent-abbreviations
         const crEl = itemLine1.slice(104, 105).trim()
 
         const plea = itemLine1.slice(106, 108).trim()
-        const find = itemLine1.slice(109, 111).trim()
+        const pleaDescription = pleas[plea]
 
-        const courtAction = (
+        const find = itemLine1.slice(109, 111).trim()
+        const findDescription = finds[find]
+
+        const comment = (
           itemLine1.slice(112, 131).trim() +
           '\n' +
           itemLine2.slice(112, 131)
@@ -156,19 +178,23 @@ export function parseDockets(docketFileText: string): Docket[] {
         const docketItem: DocketItem = {
           lineNumber: Number.parseInt(lineNumber, 10),
           informationNumber,
-          defendantBirthDate: birthDate,
+          defendantBirthDate: normalizeItemDate(birthDate),
           counts: Number.parseInt(counts, 10),
-          appType: (appType + ' ' + appTypeNumber).trim(),
+          appTypeNumber: (appType + ' ' + appTypeNumber).trim(),
           appTypeDescription,
-          compBadge,
-          offenceDate,
+          compBadgeNumber,
+          offenceDate: normalizeItemDate(offenceDate),
+          arrestDate: normalizeItemDate(arrestDate),
           defendantName,
           offenceDescription,
           action,
+          actionDescription,
           crEl,
           plea,
+          pleaDescription,
           find,
-          courtAction
+          findDescription,
+          comment
         }
 
         docket.docketItems.push(docketItem)
