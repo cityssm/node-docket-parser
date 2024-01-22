@@ -1,5 +1,5 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable security/detect-object-injection */
+/* eslint-disable security/detect-object-injection, sonarjs/cognitive-complexity */
 import { actions, appTypes, finds, pleas } from './lookups.js';
 import { normalizeCourtDate, normalizeItemDate } from './utilities.js';
 const spacePaddingLength = 130;
@@ -72,24 +72,24 @@ export function parseDockets(docketFileText) {
                 const lineNumber = itemLine1.slice(0, 4).trim();
                 if (lineNumber === '') {
                     // Likely a comment overflowing to next two lines
-                    const extendedComment = (itemLine1.slice(112, 131).trim() +
-                        '\n' +
-                        itemLine2.slice(112, 131)).trim();
+                    const extendedComment = `${itemLine1
+                        .slice(112, 131)
+                        .trim()}\n${itemLine2.slice(112, 131)}`.trim();
                     docket.docketItems.at(-1).comment +=
                         '\n' + extendedComment;
                     continue;
                 }
-                const informationNumber = (itemLine1.slice(5, 16).trim() +
-                    ' ' +
-                    itemLine2.slice(5, 16)).trim();
+                const informationNumber = `${itemLine1
+                    .slice(5, 16)
+                    .trim()} ${itemLine2.slice(5, 16)}`.trim();
                 const birthDate = itemLine1.slice(17, 24).trim();
                 const counts = itemLine1.slice(25, 27).trim();
                 const appType = itemLine1.slice(28, 31).trim();
                 const appTypeNumber = itemLine2.slice(28, 31).trim();
                 const appTypeDescription = appTypes[appType];
-                const compBadgeNumber = (itemLine1.slice(32, 40).trim() +
-                    ' ' +
-                    itemLine2.slice(32, 40)).trim();
+                const compBadgeNumber = `${itemLine1
+                    .slice(32, 40)
+                    .trim()} ${itemLine2.slice(32, 40)}`.trim();
                 const offenceDate = itemLine1.slice(41, 48).trim();
                 const arrestDate = itemLine2.slice(41, 48).trim();
                 const defendantName = itemLine1.slice(53, 78).trim();
@@ -102,15 +102,13 @@ export function parseDockets(docketFileText) {
                 const pleaDescription = pleas[plea];
                 const find = itemLine1.slice(109, 111).trim();
                 const findDescription = finds[find];
-                const comment = (itemLine1.slice(112, 131).trim() +
-                    '\n' +
-                    itemLine2.slice(112, 131)).trim();
+                const comment = `${itemLine1.slice(112, 131).trim()}\n${itemLine2.slice(112, 131)}`.trim();
                 const docketItem = {
                     lineNumber: Number.parseInt(lineNumber, 10),
                     informationNumber,
                     defendantBirthDate: normalizeItemDate(birthDate),
                     counts: Number.parseInt(counts, 10),
-                    appTypeNumber: (appType + ' ' + appTypeNumber).trim(),
+                    appTypeNumber: `${appType} ${appTypeNumber}`.trim(),
                     appTypeDescription,
                     compBadgeNumber,
                     offenceDate: normalizeItemDate(offenceDate),
@@ -133,3 +131,4 @@ export function parseDockets(docketFileText) {
     }
     return dockets;
 }
+export * as lookups from './lookups.js';

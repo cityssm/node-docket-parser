@@ -1,4 +1,4 @@
-import type * as lookups from './lookups.js';
+import type { actions, appTypes, finds, pleas } from './lookups.js';
 /**
  * Format: yyyy/mm/dd
  */
@@ -25,18 +25,18 @@ export interface DocketItem {
     defendantBirthDate: DocketDateString | undefined;
     counts: number;
     appTypeNumber: string;
-    appTypeDescription: (typeof lookups.appTypes)[keyof typeof lookups.appTypes] | undefined;
+    appTypeDescription: (typeof appTypes)[keyof typeof appTypes] | undefined;
     compBadgeNumber: string;
     offenceDate: DocketDateString | undefined;
     arrestDate: DocketDateString | undefined;
     defendantName: string;
     offenceDescription: string;
     action: string;
-    actionDescription: (typeof lookups.actions)[keyof typeof lookups.actions] | undefined;
+    actionDescription: (typeof actions)[keyof typeof actions] | undefined;
     crEl: string;
     plea: string;
-    pleaDescription: (typeof lookups.pleas)[keyof typeof lookups.pleas] | undefined;
+    pleaDescription: (typeof pleas)[keyof typeof pleas] | undefined;
     find: string;
-    findDescription: (typeof lookups.finds)[keyof typeof lookups.finds] | undefined;
+    findDescription: (typeof finds)[keyof typeof finds] | undefined;
     comment: string;
 }

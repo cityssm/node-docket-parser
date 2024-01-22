@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "description": "Parses Provincial Offences docket print data into JavaScript objects.",
+  "description": "Parses Ontario Provincial Offences docket print data into JavaScript objects.",
   "keywords": [
     "court",
     "docket",

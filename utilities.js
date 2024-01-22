@@ -19,11 +19,8 @@ const monthNumbers = {
  */
 export function normalizeCourtDate(courtDateString) {
     const courtDatePieces = courtDateString.padStart(11, '0').split(' ');
-    return (courtDatePieces[2] +
-        '/' +
-        monthNumbers[courtDatePieces[1]] +
-        '/' +
-        courtDatePieces[0]);
+    const monthString = monthNumbers[courtDatePieces[1]];
+    return `${courtDatePieces[2]}/${monthString}/${courtDatePieces[0]}`;
 }
 /**
  * Converts the line item dates on the docket into a standardized format.
@@ -44,9 +41,5 @@ export function normalizeItemDate(itemDateString) {
     if (itemDate.getTime() > currentDate.getTime()) {
         itemYear -= 100;
     }
-    return (itemYear.toString() +
-        '/' +
-        itemMonthString +
-        '/' +
-        itemDayString);
+    return `${itemYear.toString()}/${itemMonthString}/${itemDayString}`;
 }

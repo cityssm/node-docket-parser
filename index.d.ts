@@ -5,3 +5,5 @@ import type { Docket } from './types.js';
  * @returns {Docket[]} - An array of dockets
  */
 export declare function parseDockets(docketFileText: string): Docket[];
+export * as lookups from './lookups.js';
+export type * as types from './types.js';

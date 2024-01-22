@@ -23,11 +23,9 @@ const monthNumbers = {
 export function normalizeCourtDate(courtDateString: string): DocketDateString {
   const courtDatePieces = courtDateString.padStart(11, '0').split(' ')
 
-  return (courtDatePieces[2] +
-    '/' +
-    monthNumbers[courtDatePieces[1]] +
-    '/' +
-    courtDatePieces[0]) as DocketDateString
+  const monthString = monthNumbers[courtDatePieces[1]]
+
+  return `${courtDatePieces[2]}/${monthString}/${courtDatePieces[0]}` as DocketDateString
 }
 
 /**
@@ -67,9 +65,5 @@ export function normalizeItemDate(
     itemYear -= 100
   }
 
-  return (itemYear.toString() +
-    '/' +
-    itemMonthString +
-    '/' +
-    itemDayString) as DocketDateString
+  return `${itemYear.toString()}/${itemMonthString}/${itemDayString}` as DocketDateString
 }
