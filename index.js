@@ -11,7 +11,6 @@ const spacePaddingLength = 130;
 export function parseDockets(docketFileText) {
     const dockets = [];
     const docketLines = docketFileText.split(/[\n\f]/);
-    console.log(docketLines.length);
     let docketLineIndex = 0;
     for (docketLineIndex = 0; docketLineIndex < docketLines.length; docketLineIndex += 1) {
         let docketLine = docketLines.at(docketLineIndex) ?? '';

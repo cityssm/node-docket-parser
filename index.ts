@@ -16,7 +16,6 @@ export function parseDockets(docketFileText: string): Docket[] {
   const dockets: Docket[] = []
 
   const docketLines = docketFileText.split(/[\n\f]/)
-  console.log(docketLines.length)
 
   let docketLineIndex = 0
 
