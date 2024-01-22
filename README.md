@@ -45,7 +45,6 @@ console.log(docket)
       "appTypeDescription": "First Appearance",
       "compBadgeNumber": "XXXXX 0000",
       "offenceDate": "2023/12/24",
-      "arrestDate": "2023/12/25",
       "defendantName": "GRINCH, THE",
       "offenceDescription": "STEALING CHRISTMAS",
       "action": "WD",
