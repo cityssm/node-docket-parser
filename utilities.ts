@@ -30,7 +30,7 @@ export function normalizeCourtDate(courtDateString: string): DocketDateString {
 
 /**
  * Converts the line item dates on the docket into a standardized format.
- * @param itemDateString ex. "1AUG23"
+ * @param {string} itemDateString ex. "1AUG23"
  * @returns {DocketDateString} ex. "2023/08/01"
  */
 export function normalizeItemDate(
