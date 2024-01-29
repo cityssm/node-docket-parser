@@ -15,7 +15,7 @@ const spacePaddingLength = 130
 export function parseDockets(docketFileText: string): Docket[] {
   const dockets: Docket[] = []
 
-  const docketLines = docketFileText.replaceAll('\f', ' ').split(/[\n\f]/)
+  const docketLines = docketFileText.replaceAll('\f', ' \n').split(/[\n\f]/)
 
   let docketLineIndex = 0
 
