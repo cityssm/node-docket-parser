@@ -15,7 +15,7 @@ const spacePaddingLength = 130
 export function parseDockets(docketFileText: string): Docket[] {
   const dockets: Docket[] = []
 
-  const docketLines = docketFileText.split(/[\n\f]/)
+  const docketLines = docketFileText.replaceAll('\f', ' ').split(/[\n\f]/)
 
   let docketLineIndex = 0
 
@@ -123,9 +123,11 @@ export function parseDockets(docketFileText: string): Docket[] {
             .slice(112, 131)
             .trim()}\n${itemLine2.slice(112, 131)}`.trim()
 
-          ;(
-            docket.docketItems.at(-1) as DocketItem
-          ).comment += `\n${extendedComment}`
+          try {
+            ;(
+              docket.docketItems.at(-1) as DocketItem
+            ).comment += `\n${extendedComment}`
+          } catch {}
 
           continue
         }

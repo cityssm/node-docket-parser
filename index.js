@@ -10,7 +10,7 @@ const spacePaddingLength = 130;
  */
 export function parseDockets(docketFileText) {
     const dockets = [];
-    const docketLines = docketFileText.split(/[\n\f]/);
+    const docketLines = docketFileText.replaceAll('\f', ' ').split(/[\n\f]/);
     let docketLineIndex = 0;
     for (docketLineIndex = 0; docketLineIndex < docketLines.length; docketLineIndex += 1) {
         let docketLine = docketLines.at(docketLineIndex) ?? '';
@@ -74,7 +74,11 @@ export function parseDockets(docketFileText) {
                     const extendedComment = `${itemLine1
                         .slice(112, 131)
                         .trim()}\n${itemLine2.slice(112, 131)}`.trim();
-                    docket.docketItems.at(-1).comment += `\n${extendedComment}`;
+                    try {
+                        ;
+                        docket.docketItems.at(-1).comment += `\n${extendedComment}`;
+                    }
+                    catch { }
                     continue;
                 }
                 const informationNumber = `${itemLine1
